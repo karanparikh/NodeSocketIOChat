@@ -4,5 +4,6 @@ io.sockets.on('connection', function(socket) {
     console.log("Client connected!");
     socket.on('message', function(data) {
         console.log("Recvd: ", data);
+        socket.send(data);
     });
 });

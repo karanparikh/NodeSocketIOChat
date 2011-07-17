@@ -1,16 +1,21 @@
+<!doctype html>
 <html>
     <script src="/home/karanparikh/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript">
-        var socket = io.connect("http://localhost:8000");
         $(function() {
+            var socket = io.connect("http://localhost:8000");
             $("#send").click(function(e) {
                 var content = $("#chat").val();
                 if(content != ""){
                     socket.send(content);
                     $("#chat").val("");
-                    e.preventDefault();
                 }
+                e.preventDefault();
+            });
+            socket.on('message', function(data) {
+                var content = "<li>" + data + "</li>";
+                $("#echo").append(content);
             });
         });
     </script>
@@ -19,5 +24,8 @@
             <input type="text" id="chat">
             <input type="submit" value="Send" id="send">
         </form>
+        <ul id="echo">
+            <!-- echo messages here -->
+        </ul>
     </body>
 </html>
