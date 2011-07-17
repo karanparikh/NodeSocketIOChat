@@ -1,0 +1,23 @@
+<html>
+    <script src="/home/karanparikh/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        var socket = io.connect("http://localhost:8000");
+        $(function() {
+            $("#send").click(function(e) {
+                var content = $("#chat").val();
+                if(content != ""){
+                    socket.send(content);
+                    $("#chat").val("");
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+    <body>
+        <form>
+            <input type="text" id="chat">
+            <input type="submit" value="Send" id="send">
+        </form>
+    </body>
+</html>
