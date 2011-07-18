@@ -13,7 +13,7 @@
                 }
                 e.preventDefault();
             });
-            socket.on('message', function(data) {
+            socket.on('chat', function(data) {
                 var content = "<li>" + data + "</li>";
                 $("#echo").append(content);
             });
