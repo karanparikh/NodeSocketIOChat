@@ -5,6 +5,18 @@
     <script type="text/javascript">
         $(function() {
             var socket = io.connect("http://localhost:8000");
+
+            //set our nickname
+            $("#nickname").click(function(e) {
+                var nickname = $("#nick").val();
+                socket.emit('set_nickname', nickname);
+                $("#nick").hide();
+                $("#nickname").hide();
+                $("#announce").append("<i>You are " + nickname + ".\n</i>");
+                e.preventDefault();
+            });
+
+            //send our message to the server
             $("#send").click(function(e) {
                 var content = $("#chat").val();
                 if(content != ""){
@@ -13,19 +25,35 @@
                 }
                 e.preventDefault();
             });
+
+            //display the messages
             socket.on('chat', function(data) {
                 var content = "<li>" + data + "</li>";
-                $("#echo").append(content);
+                $("#messages").prepend(content);
+                $("#messages li:first").fadeIn("slow");
+            });
+
+            //new user announcement
+            socket.on('new_user', function(nickname) {
+                $("#announce").prepend("<i>New user " + nickname + " connected!\n</i>");
+                $("#announce li:first").fadeIn("slow");
             });
         });
     </script>
     <body>
         <form>
+            <input type="text" id="nick">
+            <input type="submit" value="Nickname" id="nickname">
+        </form>
+        <form>
             <input type="text" id="chat">
             <input type="submit" value="Send" id="send">
         </form>
-        <ul id="echo">
-            <!-- echo messages here -->
+        <div id="announce">
+            <!-- announcements here -->
+        </div>
+        <ul id="messages">
+            <!-- messages here -->
         </ul>
     </body>
 </html>
